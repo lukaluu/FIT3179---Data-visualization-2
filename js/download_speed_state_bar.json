@@ -1,0 +1,59 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Busy-hour download speed — state ranking (Mbps)", "anchor": "start"},
+  "width": "container",
+  "height": 350,
+  "data": {
+    "url": "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/data/state_summary.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"calculate": "datum.state_or_territory", "as": "State"},
+    {"calculate": "format(datum.download_busy_mbps, '.1f') + ' Mbps'", "as": "dl_label"},
+    {"calculate": "format(datum.upload_busy_mbps, '.1f') + ' Mbps'", "as": "ul_label"},
+    {"calculate": "format(datum.latency_busy_ms, '.1f') + ' ms'", "as": "lat_label"},
+    {"calculate": "format(datum.outages_per_day, '.2f') + ' /day'", "as": "out_label"},
+    {"calculate": "format(datum.n_units, ',.0f')", "as": "n_label"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 3},
+      "encoding": {
+        "y": {"field": "State", "type": "nominal", "sort": "-x", "title": ""},
+        "x": {
+          "field": "download_busy_mbps",
+          "type": "quantitative",
+          "title": "Download (busy, Mbps)"
+        },
+        "color": {
+          "field": "download_busy_mbps",
+          "type": "quantitative",
+          "scale": {"scheme": "blues"},
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "State", "title": "State/Territory"},
+          {"field": "dl_label", "type": "nominal", "title": "Download (busy)"},
+          {"field": "ul_label", "type": "nominal", "title": "Upload (busy)"},
+          {"field": "lat_label", "type": "nominal", "title": "Latency (busy)"},
+          {"field": "out_label", "type": "nominal", "title": "Outages"},
+          {"field": "n_label", "type": "nominal", "title": "Sample size"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "align": "left", "dx": 4, "dy": 0, "baseline": "middle"},
+      "encoding": {
+        "y": {"field": "State", "type": "nominal", "sort": "-x"},
+        "x": {"field": "download_busy_mbps", "type": "quantitative"},
+        "text": {"field": "dl_label", "type": "nominal"},
+        "color": {"value": "#1f2937"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"labelFontSize": 12},
+    "bar": {"binSpacing": 2}
+  }
+}
