@@ -1,0 +1,102 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Download speed vs plan through the day — deviation (Mbps)", "anchor": "start"},
+  "width": 800,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/data/plans_load_speed_during_day.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    { "calculate": "toNumber(substring(datum.Time,0,2))", "as": "Hour" },
+    { "fold": ["Download_NBN100","Download_NBN50","Download_NBN25"], "as": ["Metric","Value"] },
+    { "calculate": "replace(datum.Metric,'Download_NBN','NBN')", "as": "Tier" },
+
+    {
+      "calculate": "datum.Tier==='NBN100' ? 100 : datum.Tier==='NBN50' ? 50 : 25",
+      "as": "Plan"
+    },
+
+    { "calculate": "datum.Value - datum.Plan", "as": "DevMbps" },
+
+    { "calculate": "pad(format(datum.Hour, '02'),2,'0','left') + ':00'", "as": "HourLabel" },
+    { "calculate": "format(datum.Value, '.1f') + ' Mbps'", "as": "val_label" },
+    { "calculate": "format(datum.Plan, '.0f') + ' Mbps'", "as": "plan_label" },
+    { "calculate": "format(datum.DevMbps, '.2f') + ' Mbps'", "as": "dev_label" }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rect", "opacity": 0.08},
+      "encoding": {
+        "x": {"value": 19}, "x2": {"value": 22.999},
+        "y": {"value": 0},  "y2": {"value": 1},
+        "color": {"value": "#000"}
+      }
+    },
+
+    { "mark": {"type": "rule", "color": "#9ca3af"}, "encoding": { "y": { "datum": 0 } } },
+
+    {
+      "mark": {"type": "line", "interpolate": "monotone", "strokeWidth": 2},
+      "encoding": {
+        "x": {
+          "field": "Hour", "type": "quantitative", "title": "Time of day",
+          "axis": {
+            "values": [0,3,6,9,12,15,18,21],
+            "labelExpr": "datum.value < 10 ? '0' + datum.value + ':00' : datum.value + ':00'"
+          }
+        },
+        "y": {
+          "field": "DevMbps", "type": "quantitative",
+          "title": "Deviation from plan (Mbps)",
+          "scale": {"zero": true}
+        },
+        "color": { "field": "Tier", "type": "nominal", "title": "Plan tier" },
+        "tooltip": [
+          { "field": "HourLabel", "title": "Time" },
+          { "field": "Tier", "title": "Tier" },
+          { "field": "dev_label", "type": "nominal", "title": "Deviation" },
+          { "field": "val_label", "type": "nominal", "title": "Observed speed" },
+          { "field": "plan_label", "type": "nominal", "title": "Plan speed" }
+        ]
+      }
+    },
+
+    {
+      "mark": {"type": "point", "filled": true, "size": 36, "opacity": 0.85},
+      "encoding": {
+        "x": {"field": "Hour", "type": "quantitative"},
+        "y": {"field": "DevMbps", "type": "quantitative"},
+        "color": { "field": "Tier", "type": "nominal", "legend": null },
+        "tooltip": [
+          { "field": "HourLabel", "title": "Time" },
+          { "field": "Tier", "title": "Tier" },
+          { "field": "dev_label", "type": "nominal", "title": "Deviation" },
+          { "field": "val_label", "type": "nominal", "title": "Observed speed" },
+          { "field": "plan_label", "type": "nominal", "title": "Plan speed" }
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        { "aggregate": [{ "op": "max", "field": "DevMbps", "as": "ymax" }] }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -6,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "fill": "#374151"
+      },
+      "encoding": {
+        "x": { "datum": 20 },                     
+        "y": { "field": "ymax", "type": "quantitative" },
+        "text": { "value": "Evening peak hours (7–10 pm)" }
+      }
+    }
+  ],
+  "config": { "view": { "stroke": null } }
+}
