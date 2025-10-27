@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Screens, Sport & Speed — Australia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Vega stack -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#11192b; --soft:#16213b; --text:#e5e7eb; --muted:#a7b0c3;
+      --accent:#60a5fa; --card:#0f172a;
+      --maxw:1180px;
+    }
+    html,body{margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;}
+    a{color:var(--accent); text-decoration:none}
+    header{padding:28px 16px; border-bottom:1px solid #1f2a44; background:linear-gradient(180deg,#0b1220 0%, #0b1220cc 100%);}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px;}
+    h1{margin:0 0 6px 0; font-size:28px}
+    .sub{color:var(--muted); max-width:75ch}
+    section{padding:28px 0}
+    h2{margin:0 0 12px 0; font-size:22px}
+    p.lead{color:var(--muted); margin:4px 0 18px 0; max-width:80ch}
+
+    /* cards + grid */
+    .grid{display:grid; gap:16px}
+    @media (min-width: 980px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
+    .card{
+      background:var(--panel);
+      border:1px solid #1e293b;
+      border-radius:14px;
+      overflow:hidden;
+      display:flex; flex-direction:column;
+      min-height: 200px;
+    }
+    .card .viz{ padding:16px; background:var(--card); }
+    .card .meta{ padding:12px 16px; border-top:1px solid #1f2a44; }
+    .meta h3{margin:0 0 4px 0; font-size:16px}
+    .meta p{margin:0; color:var(--muted)}
+    .note{font-size:13px; color:var(--muted)}
+    .pill{display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; color:#0b1220; background:var(--accent); margin-right:6px}
+    footer{padding:28px 16px 48px; border-top:1px solid #1f2a44; color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Screens, Sport & Speed — how Australians connect, play, and age</h1>
+      <p class="sub">
+        A compact walkthrough linking network performance with digital leisure, outdoor activity, and health context.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1) Infrastructure landscape -->
+    <section id="infrastructure">
+      <h2>1) Connectivity landscape</h2>
+      <p class="lead">Where internet performance is strongest or weakest by state, and how big the gap is.</p>
+
+      <div class="grid cols-2">
+        <article class="card wrap">
+          <div id="viz-speed-map" class="viz"></div>
+          <div class="meta">
+            <h3>Busy-hour download speed by state</h3>
+            <p>Clear state differences set the context for evening leisure use and multiplayer reliability.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div id="viz-speed-rank" class="viz"></div>
+          <div class="meta">
+            <h3>Exact values (ranked)</h3>
+            <p>Quantifies the distance between fastest and slowest states so later comparisons have scale.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 2) When people are online -->
+    <section id="timing">
+      <h2>2) When people are online</h2>
+      <p class="lead">Evening is the peak leisure window; deviations from plan are most noticeable here.</p>
+
+      <article class="card">
+        <div id="viz-hour" class="viz"></div>
+        <div class="meta">
+          <h3>Deviation from plan (Mbps) across the day</h3>
+          <p>Higher tiers cushion small evening dips; useful context for streaming/gaming satisfaction.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 3) Screen leisure -->
+    <section id="screen">
+      <h2>3) Digital leisure</h2>
+      <p class="lead">Who plays more by generation and sex.</p>
+
+      <article class="card">
+        <div id="viz-gaming" class="viz"></div>
+        <div class="meta">
+          <h3>Share who played digital games</h3>
+          <p>Age gradient is strong; males tend to play more within each generation.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 4) Outdoor leisure -->
+    <section id="sport">
+      <h2>4) Outdoor activity</h2>
+      <p class="lead">How time on outdoor sport varies by age &amp; sex — a counterweight to screen time.</p>
+
+      <article class="card">
+        <div id="viz-sport" class="viz"></div>
+        <div class="meta">
+          <h3>Outdoor sport time (hours/day)</h3>
+          <p>Men spend more time than women at most ages; Persons marker shows the group average per row.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 5) Health context -->
+    <section id="health">
+      <h2>5) Health context</h2>
+      <p class="lead">Prevalence rises with age; males generally higher. Labels use plain language.</p>
+
+      <article class="card">
+        <div id="viz-diabetes" class="viz"></div>
+        <div class="meta">
+          <h3>Diabetes prevalence by age &amp; sex</h3>
+          <p class="note">Fasting glucose = today’s blood test • HbA1c = 3-month average.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 6) Linking the dots -->
+    <section id="link">
+      <h2>6) Performance vs experience</h2>
+      <p class="lead">Do the states with faster downloads also feel snappier (lower latency)?</p>
+
+      <article class="card">
+        <div id="viz-speed-lat" class="viz"></div>
+        <div class="meta">
+          <h3>Download vs latency (by state)</h3>
+          <p>Use alongside the map to discuss which states are best positioned for heavy evening use.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Prototype layout • Data sources: ABS, NBN MBA program, author calculations. Charts rendered with Vega-Lite.</p>
+    </div>
+  </footer>
+
+  <script>
+    vegaEmbed("#viz-speed-map", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/speed_state_map.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
+    vegaEmbed("#viz-speed-rank", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/speed_state_bar.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
+    vegaEmbed("#viz-hour", "https://raw.githubusercontent.com/HaiNam2312/A2/refs/heads/main/js/nbn_performance_hour.json", { mode: "vega-lite", renderer: "svg", actions: false }).catch(console.error);
+    vegaEmbed("#viz-gaming", "https://raw.githubusercontent.com/HaiNam2312/A2/refs/heads/main/js/game_gen_sex.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
+    vegaEmbed("#viz-sport", "https://raw.githubusercontent.com/HaiNam2312/A2/refs/heads/main/js/outdoor_sport_time_gen_sex_bar.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
+    vegaEmbed("#viz-diabetes", "https://raw.githubusercontent.com/HaiNam2312/A2/refs/heads/main/js/pct_diabetes_age_sex_butterfly.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
+    vegaEmbed("#viz-speed-lat", "https://raw.githubusercontent.com/HaiNam2312/A2/refs/heads/main/js/speed_latency_state_scatter.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
+  </script>
+</body>
+</html>
