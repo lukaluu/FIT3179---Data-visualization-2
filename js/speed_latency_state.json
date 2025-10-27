@@ -1,0 +1,65 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Speed vs Latency by State (busy hour)", "anchor": "start"},
+  "width": 700,
+  "height": 420,
+  "data": {
+    "url": "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/data/state_summary.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "calculate": "(datum.state_or_territory==='Northern Australia' ? 'Northern Territory' : datum.state_or_territory)",
+      "as": "state_or_territory_norm"
+    },
+    {
+      "calculate": "datum.state_or_territory_norm==='Northern Territory' || datum.state_or_territory_norm==='South Australia' ? 'Northern Territory & South Australia' : datum.state_or_territory_norm",
+      "as": "CombinedState"
+    },
+
+    {
+      "aggregate": [
+        {"op": "mean", "field": "download_busy_mbps", "as": "download_busy_mbps"},
+        {"op": "mean", "field": "upload_busy_mbps", "as": "upload_busy_mbps"},
+        {"op": "mean", "field": "latency_busy_ms", "as": "latency_busy_ms"},
+        {"op": "mean", "field": "outages_per_day", "as": "outages_per_day"},
+        {"op": "sum",  "field": "n_units", "as": "n_units"}
+      ],
+      "groupby": ["CombinedState"]
+    },
+
+    {"calculate": "format(datum.download_busy_mbps, '.1f') + ' Mbps'", "as": "dl_label"},
+    {"calculate": "format(datum.upload_busy_mbps, '.1f') + ' Mbps'", "as": "ul_label"},
+    {"calculate": "format(datum.latency_busy_ms, '.1f') + ' ms'", "as": "lat_label"},
+    {"calculate": "format(datum.outages_per_day, '.2f') + ' times/day'", "as": "out_label"},
+    {"calculate": "format(datum.n_units, ',.0f')", "as": "n_label"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "point", "filled": true, "size": 180, "opacity": 0.9},
+      "encoding": {
+        "x": {"field": "download_busy_mbps", "type": "quantitative", "title": "Download (busy, Mbps)"},
+        "y": {"field": "latency_busy_ms", "type": "quantitative", "title": "Latency (busy, ms)"},
+        "size": {"field": "n_units", "type": "quantitative", "title": "Number of Unit"},
+        "color": {"field": "CombinedState", "type": "nominal", "title": "State"},
+        "tooltip": [
+          {"field": "CombinedState", "title": "State/Territory"},
+          {"field": "dl_label", "type": "nominal", "title": "Download"},
+          {"field": "ul_label", "type": "nominal", "title": "Upload"},
+          {"field": "lat_label", "type": "nominal", "title": "Latency"},
+          {"field": "out_label", "type": "nominal", "title": "Outages"},
+          {"field": "n_label", "type": "nominal", "title": "Number of Units"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "dy": -8, "fontSize": 11},
+      "encoding": {
+        "x": {"field": "download_busy_mbps", "type": "quantitative"},
+        "y": {"field": "latency_busy_ms", "type": "quantitative"},
+        "text": {"field": "CombinedState"}
+      }
+    }
+  ],
+  "config": {"view": {"stroke": null}}
+}
