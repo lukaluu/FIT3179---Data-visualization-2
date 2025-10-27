@@ -1,0 +1,8 @@
+state_or_territory,n_units,pct_of_plan_dl_busy,pct_of_plan_ul_busy
+ACT,66,100.7,89.3
+NSW,569,100.5,89.2
+NT + SA,120,102.7,90.0
+QLD,323,99.8,89.5
+TAS,81,94.9,86.3
+VIC,482,100.0,90.3
+WA,162,98.4,88.6
