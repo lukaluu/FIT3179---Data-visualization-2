@@ -1,0 +1,62 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": {"text": "Outdoor sport time by age and sex (hours/day)", "anchor": "start"},
+  "width": 800,
+  "height": 350,
+  "data": {
+    "url": "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/data/avg_time_sport_outdoor_sex_gen.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"calculate": "trim(datum[''])", "as": "Age"},
+    {"fold": ["Males", "Females"], "as": ["Sex", "Hours"]},
+    {"calculate": "datum.Sex==='Males' ? datum.m_ci_low : datum.f_ci_low", "as": "ci_low"},
+    {"calculate": "datum.Sex==='Males' ? datum.m_ci_high : datum.f_ci_high", "as": "ci_high"},
+    {"calculate": "datum.Sex==='Males' ? -12 : 12", "as": "yoff"},
+    {"calculate": "format(datum.Hours, '.1f') + ' h/day'", "as": "hrs_label"},
+    {"calculate": "format(datum.ci_low, '.1f') + '–' + format(datum.ci_high, '.1f') + ' h/day'", "as": "ci_label"}
+  ],
+  "layer": [
+    {
+      "transform": [
+        {
+          "aggregate": [{"op": "max", "field": "Persons", "as": "Persons"}],
+          "groupby": ["Age"]
+        },
+        {"calculate": "datum.Persons - 0.01", "as": "px1"},
+        {"calculate": "datum.Persons + 0.01", "as": "px2"},
+        {"calculate": "format(datum.Persons, '.1f') + ' h/day'", "as": "persons_label"}
+      ],
+      "mark": {"type": "rect", "opacity": 0.15, "color": "black"},
+      "encoding": {
+        "y": {
+          "field": "Age", "type": "nominal", "title": "",
+          "sort": ["15-24","25-39","40-54","55-74","75 and older"]
+        },
+        "x": {"field": "px1", "type": "quantitative", "title": "Hours/day"},
+        "x2": {"field": "px2"},
+        "tooltip": [
+          {"field": "Age", "title": "Age group"},
+          {"field": "persons_label", "type": "nominal", "title": "Persons"}
+        ]
+      }
+    },
+
+    {
+      "mark": {"type": "bar", "size": 22, "cornerRadiusEnd": 2, "opacity": 0.9},
+      "encoding": {
+        "y": {"field": "Age", "type": "nominal", "sort": ["15-24","25-39","40-54","55-74","75 and older"]},
+        "xOffset": {"field": "xoff"},
+        "x": {"field": "Hours", "type": "quantitative"},
+        "color": {"field": "Sex", "type": "nominal", "title": "Sex"},
+        "tooltip": [
+          {"field": "Age", "title": "Age group"},
+          {"field": "Sex", "title": "Sex"},
+          {"field": "hrs_label", "type": "nominal", "title": "Average time"},
+          {"field": "ci_label", "type": "nominal", "title": "95% CI"}
+        ]
+      }
+    }
+  ],
+  "config": {"view": {"stroke": null}}
+}
