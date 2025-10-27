@@ -1,0 +1,63 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Busy-hour download speed by state (Mbps)", "anchor": "start"},
+  "width": "container",
+  "height": 400,
+  "autosize": {"type": "fit", "contains": "padding", "resize": true},
+  "padding": {"left": 4, "right": 4, "top": 4, "bottom": 4},
+  "projection": {"type": "mercator"},
+  "data": {
+    "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
+    "format": {"type": "json", "property": "features"}
+  },
+  "transform": [
+    {"calculate": "datum.properties.STATE_NAME", "as": "StateName"},
+    {
+      "lookup": "StateName",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/data/state_summary.csv",
+          "format": {"type": "csv"}
+        },
+        "key": "state_or_territory",
+        "fields": [
+          "download_busy_mbps","upload_busy_mbps","latency_busy_ms",
+          "outages_per_day","share_underperforming","share_impaired","n_units"
+        ]
+      }
+    },
+    {"calculate": "format(datum.download_busy_mbps, '.1f') + ' Mbps'", "as": "dl_label"},
+    {"calculate": "format(datum.upload_busy_mbps, '.1f') + ' Mbps'", "as": "ul_label"},
+    {"calculate": "format(datum.latency_busy_ms, '.1f') + ' ms'", "as": "lat_label"},
+    {"calculate": "format(datum.outages_per_day, '.2f') + ' /day'", "as": "out_label"},
+    {"calculate": "format(datum.share_underperforming, '.1f') + '%'", "as": "under_label"},
+    {"calculate": "format(datum.share_impaired, '.1f') + '%'", "as": "imp_label"},
+    {"calculate": "format(datum.n_units, ',.0f')", "as": "n_units_label"}
+  ],
+  "mark": {"type": "geoshape", "stroke": "white"},
+  "encoding": {
+    "color": {
+      "field": "download_busy_mbps",
+      "type": "quantitative",
+      "scale": {"scheme": "blues"},
+      "legend": {
+        "orient": "bottom",
+        "direction": "horizontal",
+        "gradientLength": 280,
+        "labelFontSize": 11,
+        "titleFontSize": 12,
+        "title": "Download (Mbps)"
+      }
+    },
+    "tooltip": [
+      {"field": "StateName", "title": "State/Territory"},
+      {"field": "dl_label", "type": "nominal", "title": "Download"},
+      {"field": "ul_label", "type": "nominal", "title": "Upload"},
+      {"field": "lat_label", "type": "nominal", "title": "Latency"},
+      {"field": "out_label", "type": "nominal", "title": "Outages"},
+      {"field": "under_label", "type": "nominal", "title": "% Underperforming"},
+      {"field": "imp_label", "type": "nominal", "title": "% Impaired"}
+    ]
+  },
+  "config": {"view": {"stroke": null}}
+}
