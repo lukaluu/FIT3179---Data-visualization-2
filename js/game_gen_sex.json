@@ -1,0 +1,71 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Share who played digital games by generation (%)", "anchor": "start"},
+  "width": 800,
+  "height": 450,
+  "data": {
+    "url": "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/data/pct_game_time_by_sex_gen.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"calculate": "datum['']", "as": "Generation"},
+
+    {"fold": ["Males", "Females", "Persons"], "as": ["Group", "Percent"]},
+
+    {
+      "calculate": "datum.Group==='Males' ? datum.m_ci_low : datum.Group==='Females' ? datum.f_ci_low : datum.p_ci_low",
+      "as": "ci_low"
+    },
+    {
+      "calculate": "datum.Group==='Males' ? datum.m_ci_high : datum.Group==='Females' ? datum.f_ci_high : datum.p_ci_high",
+      "as": "ci_high"
+    },
+
+    {
+      "calculate": "datum.Group==='Males' ? -12 : datum.Group==='Persons' ? 0 : 12",
+      "as": "yoff"
+    },
+
+    {"calculate": "format(datum.Percent, '.1f') + '%'", "as": "pct_label"},
+    {"calculate": "format(datum.ci_low, '.1f') + '% – ' + format(datum.ci_high, '.1f') + '%'", "as": "ci_label"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "errorbar", "ticks": true, "rule": true},
+      "encoding": {
+        "y": {"field": "Generation", "type": "nominal", "title": "", "sort": "-x"},
+        "yOffset": {"field": "yoff"},
+        "x": {"field": "ci_low", "type": "quantitative", "title": "Share (%)"},
+        "x2": {"field": "ci_high"},
+        "color": {"field": "Group", "type": "nominal", "title": ""}
+      }
+    },
+
+    {
+      "mark": {"type": "bar", "size": 20, "cornerRadiusEnd": 2, "opacity": 0.9},
+      "encoding": {
+        "y": {"field": "Generation", "type": "nominal", "sort": "-x"},
+        "yOffset": {"field": "yoff"},
+        "x": {"field": "Percent", "type": "quantitative"},
+        "color": {"field": "Group", "type": "nominal", "title": ""},
+        "tooltip": [
+          {"field": "Generation"},
+          {"field": "Group"},
+          {"field": "pct_label", "type": "nominal", "title": "Share"},
+          {"field": "ci_label", "type": "nominal", "title": "95% CI"}
+        ]
+      }
+    },
+
+    {
+      "mark": {"type": "text", "dx": 6, "baseline": "middle", "fontSize": 11, "color": "#334155"},
+      "encoding": {
+        "y": {"field": "Generation", "type": "nominal", "sort": "-x"},
+        "yOffset": {"field": "yoff"},
+        "x": {"field": "Percent", "type": "quantitative"},
+        "text": {"field": "pct_label", "type": "nominal"}
+      }
+    }
+  ],
+  "config": {"view": {"stroke": null}}
+}
