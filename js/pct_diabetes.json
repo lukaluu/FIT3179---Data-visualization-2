@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Diabetes prevalence by age — butterfly chart (%)", "anchor": "start"},
+  "width": 650,
+  "height": 350,
+  "padding": {"left": 90, "right": 12, "top": 4, "bottom": 4},
+  "data": {
+    "url": "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/data/over18_diabetes_sex_age.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"calculate": "trim(datum[''])", "as": "Age"},
+    {
+      "filter": "datum.Age != 'Total persons 18 and over' && datum.Age != 'Total persons 18  and over'"
+    },
+    {"fold": ["Males", "Females"], "as": ["Sex", "Percent"]},
+    {
+      "calculate": "datum.Sex === 'Males' ? -toNumber(datum.Percent) : toNumber(datum.Percent)",
+      "as": "Signed"
+    },
+    {"calculate": "format(datum.Percent, '.1f') + '%'", "as": "pct_label"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#94a3b8"},
+      "encoding": {"x": {"datum": 0}}
+    },
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 2},
+      "encoding": {
+        "y": {
+          "field": "Age",
+          "type": "nominal",
+          "title": "",
+          "sort": ["18-44", "45-64", "65 and over"]
+        },
+        "x": {
+          "field": "Signed",
+          "type": "quantitative",
+          "title": "Prevalence (%)",
+          "scale": {"domain": [-18, 18]},             
+          "axis": {"labelExpr": "abs(datum.value)"}    
+        },
+        "color": {
+          "field": "Sex",
+          "type": "nominal",
+          "title": "Sex",
+          "scale": {"range": ["#60a5fa", "#f59e0b"]}
+        },
+        "tooltip": [
+          {"field": "Age", "title": "Age group"},
+          {"field": "Sex", "title": "Sex"},
+          {"field": "pct_label", "type": "nominal", "title": "Prevalence"}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.Sex === 'Males'"}],
+      "mark": {"type": "text", "align": "right", "dx": -10, "baseline": "middle", "fill": "#1f2937"},
+      "encoding": {
+        "y": {"field": "Age", "type": "nominal", "sort": ["18-44", "45-64", "65 and over"]},
+        "x": {"field": "Signed", "type": "quantitative"},
+        "text": {"field": "pct_label"}
+      }
+    },
+    {
+      "transform": [{"filter": "datum.Sex === 'Females'"}],
+      "mark": {"type": "text", "align": "left", "dx": 6, "baseline": "middle", "fill": "#1f2937"},
+      "encoding": {
+        "y": {"field": "Age", "type": "nominal", "sort": ["18-44", "45-64", "65 and over"]},
+        "x": {"field": "Signed", "type": "quantitative"},
+        "text": {"field": "pct_label"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "axisY": {"labelPadding": 8}
+  }
+}
