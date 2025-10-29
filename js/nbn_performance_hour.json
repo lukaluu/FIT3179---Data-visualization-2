@@ -94,7 +94,7 @@
       "encoding": {
         "x": { "datum": 20 },                     
         "y": { "field": "ymax", "type": "quantitative" },
-        "text": { "value": "Evening peak hours (7–10 pm)" }
+        "text": { "value": "Evening peak hours (6PM - 9PM)" }
       }
     }
   ],

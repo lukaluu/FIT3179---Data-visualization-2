@@ -631,7 +631,7 @@
     <div class="hero-content">
       <h1>The Digital Divide</h1>
       <p class="tagline">
-        How Australians connect, play, and age in an increasingly digital world — a data story exploring the intersection of internet infrastructure, leisure patterns, and public health
+        The Speed of Inequality: How Australia's Digital Divide Shapes Daily Life
       </p>
       <div class="hero-stats">
         <div class="stat">
@@ -659,7 +659,7 @@
       <span class="chapter">Chapter 1</span>
       <h2>The Foundation: Australia's Digital Infrastructure</h2>
       <div class="story-intro">
-        Not all Australians experience the internet the same way. Before we can understand how people use digital services, we need to map the <strong>connectivity landscape</strong> — where is the infrastructure strongest, and where do residents face slower speeds? This sets the stage for everything that follows.
+        Not all Australians experience the internet in the same way. Before understanding how people engage with digital services, it is essential to first map the <strong>connectivity landscape</strong> - identifying where infrastructure is strongest and where residents encounter slower speeds. This foundational step establishes the context for all subsequent analysis and insights.
       </div>
 
       <div class="grid cols-2">
@@ -667,7 +667,7 @@
           <div id="viz-speed-map" class="viz loading" role="img" aria-label="Map showing download speeds by Australian state"></div>
           <div class="meta">
             <h3>Geographic Variation</h3>
-            <p>This map reveals stark differences across Australia. The colour gradient shows busy-hour download speeds — darker blue means faster connectivity. Notice how performance varies not just between cities and rural areas, but between entire states.</p>
+            <p>This map reveals stark differences across Australia. The colour gradient shows busy-hour download speeds - darker blue means faster connectivity. Notice how performance varies not just between cities and rural areas, but between entire states.</p>
           </div>
         </article>
 
@@ -675,13 +675,13 @@
           <div id="viz-speed-rank" class="viz loading" role="img" aria-label="Bar chart ranking states by download speed"></div>
           <div class="meta">
             <h3>The Rankings</h3>
-            <p>Here's the same data ranked from fastest to slowest. The gap between top and bottom states can be <strong>20+ Mbps during peak hours</strong> — enough to impact streaming quality, gaming experiences, and remote work productivity.</p>
+            <p>Here's the same data ranked from fastest to slowest. The download gap between top and bottom states can be <strong>131+ Mbps during peak hours</strong> - enough to impact streaming quality, gaming experiences, and remote work productivity.</p>
           </div>
         </article>
       </div>
 
       <p class="insight">
-        <strong>Key Insight:</strong> The digital divide isn't just about having internet or not — it's about <em>quality of experience</em>. A household in the ACT may stream 4K video seamlessly while a family in Tasmania struggles with buffering, even on the same plan tier.
+        <strong>Key Insight:</strong> The digital divide isn't just about having internet or not - it's about <em>quality of experience</em>. A household in the Victoria may stream 4K video seamlessly while a family in South Australia struggles with buffering, even on the same plan tier.
       </p>
     </section>
 
@@ -690,16 +690,16 @@
     <!-- Chapter 2: Peak Usage -->
     <section id="timing">
       <span class="chapter">Chapter 2</span>
-      <h2>When Australia Comes Online</h2>
+      <h2>The Evening Reckoning: When Everyone Logs On"</h2>
       <div class="story-intro">
-        Internet usage isn't constant throughout the day. Understanding <strong>when people are online</strong> helps us see when infrastructure is stressed — and when the speed differences between states matter most. The evening window is critical for leisure activities: streaming Netflix, gaming with friends, video calls with family.
+        Internet usage isn't constant throughout the day. Understanding <strong>when people are online</strong> helps us see when infrastructure is stressed - and when the speed differences between states matter most. The evening window is critical for leisure activities: streaming Netflix, gaming with friends, video calls with family.
       </div>
 
       <article class="card">
         <div id="viz-hour" class="viz loading" role="img" aria-label="Line chart showing speed deviation throughout the day"></div>
         <div class="meta">
           <h3>The Evening Crunch</h3>
-          <p>This chart shows how actual speeds deviate from plan speeds throughout the day. The shaded area (7–10 PM) is <strong>peak leisure time</strong> when demand surges. Notice how higher-tier plans (NBN100) maintain better performance even during peak hours — they have more "cushion" when the network gets congested.</p>
+          <p>This chart shows how actual speeds deviate from plan speeds throughout the day. The shaded area (6PM - 9PM) is <strong>peak leisure time</strong> when demand surges. Notice how higher-tier plans (NBN100) maintain better performance even during peak hours - they have more "cushion" when the network gets congested.</p>
         </div>
       </article>
 
@@ -718,26 +718,64 @@
       </p>
     </section>
 
-    <div class="connection" aria-hidden="true">So what are Australians actually doing online during peak hours?</div>
+    <div class="connection" aria-hidden="true"> But speed isn't the whole story - there's another metric that determines 
+whether your internet feels fast or frustratingly sluggish </div>
 
-    <!-- Chapter 3: Digital Leisure -->
-    <section id="screen">
+    <!-- Chapter 3: Synthesis -->
+    <section id="synthesis">
       <span class="chapter">Chapter 3</span>
-      <h2>Digital Leisure: Who Plays Video Games?</h2>
+      <h2>The Full Picture: Two Metrics, One Reality</h2>
       <div class="story-intro">
-        Gaming is one of the most <strong>bandwidth-intensive activities</strong> households engage in. Understanding who plays — and how participation varies by generation and gender — helps us see which demographic groups are most affected by the infrastructure variations we mapped earlier.
+        <p>Previous chapters have established that some states experience slower download speeds (Chapter 1) and that these differences are most noticeable during evening peak hours (Chapter 2). However, there is another, often overlooked, dimension of internet quality: latency - the responsiveness of a connection to user requests.</p>
+        <p>Download speed can be thought of as the width of a pipe, determining how much data can flow through it, while latency represents the time it takes for the first drop to arrive. Both are essential for a smooth online experience. Even a high-speed connection can feel sluggish if latency is high. This raises an important question: do states with slower speeds also experience higher latency, and if so, what implications does this double disadvantage have for everyday online activities?</p>
+      </div>
+
+      <article class="card">
+        <div id="viz-speed-lat" class="viz loading" role="img" aria-label="Scatterplot showing relationship between download speed and latency by state"></div>
+        <div class="meta">
+          <h3>Speed vs. Responsiveness</h3>
+          <p>Each bubble represents a state/territory, sized by number of measured units. There's a strong correlation: <strong>faster download states also tend to have lower latency</strong>.</p>
+          <p>Victoria and the Australian Capital Territory perform best, with the highest download speeds (around 280-300 Mbps) and the lowest latency, making their connections fast and responsive. Tasmania, on the other hand, faces the greatest challenge, showing both the lowest speeds and the highest latency - a clear double disadvantage.</p>
+          <p>The findings highlight a digital inequality across Australia's states.</p>
+        </div>
+      </article>
+
+      <div class="callout">
+        <h4>Why Both Metrics Matter</h4>
+        <ul>
+          <li><strong>Download speed:</strong> Determines how fast you can pull data (streaming, downloads, loading web pages)</li>
+          <li><strong>Latency:</strong> Measures responsiveness - how quickly the network reacts (critical for gaming, video calls, real-time apps)</li>
+          <li><strong>The combination:</strong> You need <em>both</em> for a great experience - high speed with high latency still feels sluggish</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="connection" aria-hidden="true"> The technical reality is clear: some states experience disadvantages on both speed and latency. However, these metrics only gain significance when considered in terms of their impact on people's everyday lives.</div>
+
+    <!-- Chapter 4: Digital Leisure -->
+    <section id="screen">
+      <span class="chapter">Chapter 4</span>
+      <h2>The Generational Gaming Divide - Amplified by Infrastructure</h2>
+      <div class="story-intro">
+        <p>Infrastructure gaps (Chapters 1-3) don't exist in a vacuum - they interact with behavioral patterns. And few behavioral patterns are as age - stratified as <strong>gaming participation</strong>.</p>
+
+        <p>Online gaming has three characteristics that make it especially sensitive to infrastructure quality:</p>
+        <p><strong>1. Bandwidth-hungry:</strong> Modern games require 25+ Mbps for smooth performance</p>
+        <p><strong>2. Latency-sensitive:</strong> Even 50ms of extra lag makes competitive play frustrating</p>  
+        <p><strong>3. Peak-hour dependent:</strong> Multiplayer gaming happens when friends are online-typically 6PM - 9PM </p>
+        <p>This means gaming participation maps directly onto the infrastructure vulnerabilities we've identified. If gaming is concentrated in younger generations, then infrastructure inequality becomes a form of generational inequality - older infrastructure policies disadvantaging younger users.</p>
       </div>
 
       <article class="card">
         <div id="viz-gaming" class="viz loading" role="img" aria-label="Bar chart showing gaming participation by generation and sex"></div>
         <div class="meta">
           <h3>The Generational Gaming Divide</h3>
-          <p>Younger Australians are far more likely to play digital games. <strong>Gen Z and Millennials show 80%+ participation</strong>, while Baby Boomers are under 40%. Males consistently play more than females across all age groups. The confidence intervals show this data is robust — these aren't sampling flukes.</p>
+          <p>Younger Australians are far more likely to play digital games. <strong>Gen Z and Millennials show 80%+ participation</strong>, while Baby Boomers are under 40%. Males consistently play more than females across all age groups. The confidence intervals show this data is robust - these aren't sampling flukes.</p>
         </div>
       </article>
 
       <p class="insight">
-        <strong>Connecting the Dots:</strong> The states with slower evening speeds (Chapter 1) disproportionately affect younger households who are most likely to be gaming. A Gen Z gamer in Tasmania may experience more lag during the 7-10 PM window than their counterpart in the ACT — not because of their plan, but because of regional infrastructure limits.
+        <strong>Connecting the Dots:</strong> The states with slower evening speeds (Chapter 1) disproportionately affect younger households who are most likely to be gaming. A Gen Z gamer in Tasmania may experience more lag during the 6PM - 9PM window than their counterpart in the ACT - not because of their plan, but because of regional infrastructure limits.
       </p>
 
       <div class="callout">
@@ -745,17 +783,17 @@
         <ul>
           <li><strong>Downloads:</strong> AAA game downloads can be 100+ GB (slower in lower-speed states)</li>
           <li><strong>Multiplayer:</strong> Needs consistent low-latency connections during peak hours</li>
-          <li><strong>Cloud gaming:</strong> Requires 25+ Mbps sustained speeds — impossible in some regions during peak</li>
+          <li><strong>Cloud gaming:</strong> Requires 25+ Mbps sustained speeds - impossible in some regions during peak</li>
           <li><strong>Game streaming:</strong> Twitch/YouTube streaming needs high upload speeds</li>
         </ul>
       </div>
     </section>
 
-    <div class="connection" aria-hidden="true">But screen time is only part of the story — what about the physical world?</div>
+    <div class="connection" aria-hidden="true">But screen time is only part of the story - what about the physical world?</div>
 
-    <!-- Chapter 4: Outdoor Activity -->
+    <!-- Chapter 5: Outdoor Activity -->
     <section id="sport">
-      <span class="chapter">Chapter 4</span>
+      <span class="chapter">Chapter 5</span>
       <h2>The Other Side: Outdoor Sport and Physical Activity</h2>
       <div class="story-intro">
         While digital gaming peaks in younger generations, <strong>outdoor sport participation</strong> provides an important counterbalance. How do Australians balance screen time with physical activity? And does this balance shift as people age?
@@ -765,12 +803,12 @@
         <div id="viz-sport" class="viz loading" role="img" aria-label="Bar chart showing outdoor sport time by age and sex"></div>
         <div class="meta">
           <h3>Age and Activity Patterns</h3>
-          <p>Younger Australians (15-24) average the most outdoor sport time — over an hour per day for males. Activity declines with age, with seniors (75+) averaging under 30 minutes daily. The grey bars show the <strong>average for "Persons"</strong> (both sexes combined) for context.</p>
+          <p>Younger Australians (15-24) average the most outdoor sport time - over an hour per day for males. Activity declines with age, with seniors (75+) averaging under 30 minutes daily.</p>
         </div>
       </article>
 
       <p class="insight">
-        <strong>The Paradox of Leisure:</strong> Gen Z and Millennials show the <em>highest</em> gaming participation (Chapter 3) but <em>also</em> the highest outdoor sport time. This suggests younger Australians aren't choosing between screen and sport — they're doing both. The real story is how <strong>total leisure time shrinks with age</strong>, affecting both digital and physical activity.
+        <strong>The Paradox of Leisure:</strong> Gen Z and Millennials show the <em>highest</em> gaming participation (Chapter 4) but <em>also</em> the highest outdoor sport time. This suggests younger Australians aren't choosing between screen and sport - they're doing both. The real story is how <strong>total leisure time shrinks with age</strong>, affecting both digital and physical activity.
       </p>
 
       <div class="callout">
@@ -784,12 +822,12 @@
       </div>
     </section>
 
-    <div class="connection" aria-hidden="true">As Australians age, both types of leisure decline — but what else changes?</div>
+    <div class="connection" aria-hidden="true">As Australians age, both types of leisure decline - but what else changes?</div>
 
-    <!-- Chapter 5: Health Context -->
+    <!-- Chapter 6: Health Context -->
     <section id="health">
-      <span class="chapter">Chapter 5</span>
-      <h2>Health Context: The Aging Factor</h2>
+      <span class="chapter">Chapter 6</span>
+      <h2>The Cruel Irony: When Those Who Need Digital Access Most Have It Least</h2>
       <div class="story-intro">
         The previous chapters showed how both <strong>digital and physical leisure decline with age</strong>. But there's another dimension: as Australians age, chronic health conditions become more prevalent. Understanding diabetes rates by age adds important context to the activity patterns we've observed.
       </div>
@@ -798,7 +836,7 @@
         <div id="viz-diabetes" class="viz loading" role="img" aria-label="Butterfly chart showing diabetes prevalence by age and sex"></div>
         <div class="meta">
           <h3>Rising Prevalence with Age</h3>
-          <p>This "butterfly chart" shows diabetes prevalence by age group. The bars extend left (males, blue) and right (females, orange) from a centre line. Among those 65+, <strong>nearly 1 in 6 Australians has diabetes</strong> — a rate that is drastically higher than younger age groups.</p>
+          <p>The chart reveals a stark reality: <strong>diabetes prevalence increases dramatically with age</strong>. Among Australians 65 and older, nearly 1 in 6 men and 1 in 10 women manage this chronic condition.</p>
         </div>
       </article>
 
@@ -807,54 +845,94 @@
         <ul>
           <li><strong>Fasting glucose:</strong> Blood test taken after overnight fast (today's reading)</li>
           <li><strong>HbA1c:</strong> Hemoglobin A1c measures average blood sugar over 3 months (longer-term view)</li>
-          <li><strong>Why it matters:</strong> Diabetes management often requires telehealth appointments, online health portals, and digital monitoring tools — activities that depend on reliable internet</li>
+          <li><strong>Why it matters:</strong> Diabetes management often requires telehealth appointments, online health portals, and digital monitoring tools - activities that depend on reliable internet</li>
         </ul>
       </div>
 
       <p class="insight">
-        <strong>The Hidden Digital Divide:</strong> Older Australians face a double burden — they have <em>lower digital literacy</em> (less gaming, less online activity) but <em>greater health needs</em> that increasingly require digital access. A senior in a low-speed state may struggle to attend telehealth appointments or access online health records, exactly when they need these services most.
+        <strong>The Hidden Digital Divide:</strong> Older Australians face a double burden - they have <em>lower digital literacy</em> (less gaming, less online activity) but <em>greater health needs</em> that increasingly require digital access. A senior in a low-speed state may struggle to attend telehealth appointments or access online health records, exactly when they need these services most.
       </p>
     </section>
 
     <div class="connection" aria-hidden="true">Let's bring it all together</div>
 
-    <!-- Chapter 6: Synthesis -->
-    <section id="synthesis">
-      <span class="chapter">Chapter 6</span>
-      <h2>Closing the Loop: Speed, Latency, and User Experience</h2>
-      <div class="story-intro">
-        We've journeyed from infrastructure through leisure patterns to health outcomes. Now let's revisit the technical performance metrics with <strong>new eyes</strong>. Do states with faster downloads also provide snappier, more responsive connections (lower latency)? And what does this mean for the diverse activities Australians engage in?
+    <!-- Conclusion -->
+    <section id="conclusion" style="background: linear-gradient(180deg, var(--bg) 0%, var(--panel) 100%); margin-top: 80px; padding-top: 80px;">
+      <div style="text-align: center; margin-bottom: 60px;">
+        <span class="chapter">Conclusion</span>
+        <h2 style="margin-top: 20px; font-size: clamp(32px, 6vw, 48px);">Infrastructure Isn't Neutral</h2>
+        <p style="font-size: clamp(18px, 3vw, 24px); color: var(--highlight); margin-top: 16px; font-weight: 600;">
+          Infrastructure inequality is healthcare inequality.
+        </p>
       </div>
 
-      <article class="card">
-        <div id="viz-speed-lat" class="viz loading" role="img" aria-label="Scatterplot showing relationship between download speed and latency by state"></div>
-        <div class="meta">
-          <h3>Speed vs. Responsiveness</h3>
-          <p>Each bubble represents a state/territory, sized by number of measured units. There's a strong correlation: <strong>faster download states also tend to have lower latency</strong>. The ACT (top-right) excels on both metrics, while Tasmania and NT cluster in the lower-left — slower speeds <em>and</em> less responsive connections.</p>
+      <div style="max-width: 900px; margin: 0 auto;">
+        
+        <!-- Opening -->
+        <div style="background: var(--panel); padding: 32px; border-radius: 16px; border-left: 4px solid var(--accent); margin-bottom: 40px; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
+          <p style="font-size: 18px; line-height: 1.8; color: var(--text); margin-bottom: 16px;">
+            We began with a map of internet speeds. <strong style="color: var(--accent-light);">We end with a map of inequality.</strong>
+          </p>
         </div>
-      </article>
 
-      <div class="callout">
-        <h4>Why Both Metrics Matter</h4>
-        <ul>
-          <li><strong>Download speed:</strong> Determines how fast you can pull data (streaming, downloads, loading web pages)</li>
-          <li><strong>Latency:</strong> Measures responsiveness — how quickly the network reacts (critical for gaming, video calls, real-time apps)</li>
-          <li><strong>The combination:</strong> You need <em>both</em> for a great experience — high speed with high latency still feels sluggish</li>
-        </ul>
-      </div>
+        <!-- The Story -->
+        <div style="margin-bottom: 48px;">
+          <h3 style="color: var(--accent-light); font-size: 22px; margin-bottom: 20px;">The story the data tells:</h3>
+          <p style="line-height: 1.8; color: var(--text); margin-bottom: 16px;">
+            Some Australian states have internet that's both <strong>slower and less responsive</strong> (Chapter 3). These gaps widen during <strong>evening peak hours</strong> (Chapter 2) when people need connectivity most. Young gamers feel this as frustration—lag in their multiplayer matches (Chapter 4). But as we age, outdoor activity declines (Chapter 5), and we shift online out of necessity, not choice.
+          </p>
+          <p style="line-height: 1.8; color: var(--text);">
+            Then comes the gut punch: <strong style="color: var(--highlight);">Nearly 1 in 6 elderly Australian men have diabetes</strong> (Chapter 6). They need telehealth appointments, digital health portals, video consultations with specialists. They're the demographic with the <strong>lowest digital literacy</strong> but the <strong>highest stakes</strong>-their healthcare depends on reliable internet.
+          </p>
+        </div>
 
-      <p class="insight">
-        <strong>The Complete Picture:</strong> States in the bottom-left suffer on both dimensions. This means:
-      </p>
-      <ul style="color:var(--muted); max-width:75ch; line-height:1.8; margin-top:16px; padding-left:24px;">
-        <li style="margin:12px 0;"><strong style="color:var(--text);">Younger gamers</strong> (Chapter 3) experience more lag in multiplayer games</li>
-        <li style="margin:12px 0;"><strong style="color:var(--text);">Households</strong> face buffering during the evening peak hours (Chapter 2)</li>
-        <li style="margin:12px 0;"><strong style="color:var(--text);">Older Australians</strong> with health needs (Chapter 5) may have poor telehealth experiences</li>
-        <li style="margin:12px 0;"><strong style="color:var(--text);">Active families</strong> (Chapter 4) who want to stream sports or use fitness apps face delays</li>
-      </ul>
+        <!-- The Bitter Math -->
+        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1)); padding: 32px; border-radius: 16px; border-left: 4px solid var(--highlight); margin-bottom: 48px; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
+          <h4 style="color: var(--highlight); font-size: 20px; margin-bottom: 20px;">The bitter math is simple:</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px;">
+            <div style="background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+              <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">Young gamers in slow states:</div>
+              <div style="font-size: 24px; color: var(--accent-light); font-weight: bold;">Frustrated</div>
+            </div>
+            <div style="background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+              <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">Elderly diabetics in slow states:</div>
+              <div style="font-size: 24px; color: var(--highlight); font-weight: bold;">Endangered</div>
+            </div>
+          </div>
+        </div>
 
-      <div class="story-intro" style="margin-top:48px; border-left-color: var(--highlight);">
-        <strong style="color: var(--highlight);">The Throughline:</strong> This isn't just a story about infrastructure — it's about <em>equity</em>. The digital divide affects different Australians in different ways: gamers frustrated by lag, seniors unable to access telehealth reliably, families with slow downloads of educational content. Infrastructure isn't neutral — it shapes who can participate fully in modern Australian life.
+        <!-- The Human Cost -->
+        <div style="margin-bottom: 48px;">
+          <h3 style="color: var(--accent-light); font-size: 22px; margin-bottom: 24px;">The Human Cost</h3>
+          <p style="line-height: 1.8; color: var(--text); margin-bottom: 24px;">
+            Behind every data point is a person:
+          </p>
+          
+          <div style="display: grid; gap: 20px;">
+            <div style="background: var(--panel); padding: 20px 24px; border-left: 3px solid var(--accent); border-radius: 8px; transition: var(--transition);" onmouseover="this.style.transform='translateX(8px)'" onmouseout="this.style.transform='translateX(0)'">
+              <div style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">→ The teenager</div>
+              <div style="color: var(--muted); line-height: 1.6;">who can't join friends online, drifting from social connections</div>
+            </div>
+            
+            <div style="background: var(--panel); padding: 20px 24px; border-left: 3px solid var(--accent-light); border-radius: 8px; transition: var(--transition);" onmouseover="this.style.transform='translateX(8px)'" onmouseout="this.style.transform='translateX(0)'">
+              <div style="color: var(--accent-light); font-weight: 600; margin-bottom: 8px;">→ The middle-aged worker</div>
+              <div style="color: var(--muted); line-height: 1.6;">downloading files at half speed, passed over for promotions</div>
+            </div>
+            
+            <div style="background: var(--panel); padding: 20px 24px; border-left: 3px solid var(--highlight); border-radius: 8px; transition: var(--transition);" onmouseover="this.style.transform='translateX(8px)'" onmouseout="this.style.transform='translateX(0)'">
+              <div style="color: var(--highlight); font-weight: 600; margin-bottom: 8px;">→ The elderly diabetic</div>
+              <div style="color: var(--muted); line-height: 1.6;">whose video call freezes mid-consultation, facing a 200km drive instead</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Final Message -->
+        <div style="background: var(--card); padding: 40px; border-radius: 16px; border: 2px solid var(--accent); margin-bottom: 40px; text-align: center; box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2);">
+          <p style="font-size: 20px; line-height: 1.7; color: var(--text); margin-bottom: 0;">
+            <strong style="color: var(--accent-light);">These aren't edge cases.</strong><br>
+            They're predictable outcomes of policy choices.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -865,9 +943,9 @@
     <div class="wrap">
       <h3>About This Story</h3>
       <p><strong>Data sources:</strong> Australian Bureau of Statistics (ABS), NBN Measuring Broadband Australia (MBA) program</p>
-      <p><strong>Visualization:</strong> Built with Vega-Lite • Interactive charts allow hover for detailed data</p>
+      <p><strong>Visualization:</strong> Built with Vega-Lite - Interactive charts allow hover for detailed data</p>
       <p><strong>Methodology:</strong> All charts use official government data; confidence intervals shown where available</p>
-      <p style="margin-top:32px; font-size:14px; opacity:0.7;">Created as a data storytelling prototype — demonstrating how infrastructure data connects to human outcomes</p>
+      <p style="margin-top:32px; font-size:14px; opacity:0.7;">Created as a data storytelling prototype - demonstrating how infrastructure data connects to human outcomes</p>
     </div>
   </footer>
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {"text": "Busy-hour download speed — state ranking (Mbps)", "anchor": "start"},
+  "title": {"text": "Busy-hour download speed - state ranking (Mbps)", "anchor": "start"},
   "width": "container",
   "height": 350,
   "data": {
