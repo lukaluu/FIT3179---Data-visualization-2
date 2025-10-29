@@ -100,11 +100,6 @@
         "fontSize": 12,
         "fontWeight": "bold",
         "fill": "#374151"
-      },
-      "encoding": {
-        "x": { "datum": 20 },                     
-        "y": { "field": "ymax", "type": "quantitative" },
-        "text": { "value": "Evening peak hours (6PM - 9PM)" }
       }
     }
   ],
