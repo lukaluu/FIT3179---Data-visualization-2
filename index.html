@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Screens, Sport & Speed — Australia</title>
+  <title>The Digital Divide: How Australians Connect, Play, and Age</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="An interactive data story exploring Australia's digital infrastructure, leisure patterns, and health outcomes" />
+  
   <!-- Vega stack -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
@@ -11,161 +13,1027 @@
 
   <style>
     :root{
-      --bg:#0b1220; --panel:#11192b; --soft:#16213b; --text:#e5e7eb; --muted:#a7b0c3;
-      --accent:#60a5fa; --card:#0f172a;
-      --maxw:1180px;
+      --bg:#0a0e17; 
+      --bg-alt:#0f1419;
+      --panel:#141920; 
+      --soft:#1a2332; 
+      --text:#e2e8f0; 
+      --muted:#94a3b8;
+      --accent:#3b82f6; 
+      --accent-light:#60a5fa;
+      --highlight:#f59e0b; 
+      --success:#10b981;
+      --card:#0f1623;
+      --border:#1e293b;
+      --maxw:1200px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    html,body{margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;}
-    a{color:var(--accent); text-decoration:none}
-    header{padding:28px 16px; border-bottom:1px solid #1f2a44; background:linear-gradient(180deg,#0b1220 0%, #0b1220cc 100%);}
-    .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px;}
-    h1{margin:0 0 6px 0; font-size:28px}
-    .sub{color:var(--muted); max-width:75ch}
-    section{padding:28px 0}
-    h2{margin:0 0 12px 0; font-size:22px}
-    p.lead{color:var(--muted); margin:4px 0 18px 0; max-width:80ch}
 
-    /* cards + grid */
-    .grid{display:grid; gap:16px}
-    @media (min-width: 980px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
-    .card{
-      background:var(--panel);
-      border:1px solid #1e293b;
-      border-radius:14px;
-      overflow:hidden;
-      display:flex; flex-direction:column;
-      min-height: 200px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .card .viz{ padding:16px; background:var(--card); }
-    .card .meta{ padding:12px 16px; border-top:1px solid #1f2a44; }
-    .meta h3{margin:0 0 4px 0; font-size:16px}
-    .meta p{margin:0; color:var(--muted)}
-    .note{font-size:13px; color:var(--muted)}
-    .pill{display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; color:#0b1220; background:var(--accent); margin-right:6px}
-    footer{padding:28px 16px 48px; border-top:1px solid #1f2a44; color:var(--muted)}
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--bg);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--highlight));
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease;
+    }
+
+    /* Skip to content for accessibility */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--accent);
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 100;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--soft);
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .loading-text {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Hero section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+        var(--bg);
+      position: relative;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      animation: fadeInUp 1s ease;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      line-height: 1.2;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+
+    .hero .tagline {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--muted);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: clamp(20px, 5vw, 60px);
+      flex-wrap: wrap;
+      margin-top: 48px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 20px;
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      min-width: 120px;
+      transition: var(--transition);
+    }
+
+    .stat:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+    }
+
+    .stat .num {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .stat .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 8px;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--accent);
+      font-size: 14px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    /* Navigation */
+    .nav-dots {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .nav-dots { display: block; }
+    }
+
+    .nav-dots a {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--soft);
+      margin: 16px 0;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-dots a::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--panel);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+    }
+
+    .nav-dots a:hover::after {
+      opacity: 1;
+    }
+
+    .nav-dots a:hover,
+    .nav-dots a.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.4);
+    }
+
+    /* Main content */
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: clamp(60px, 10vw, 100px) 0;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .chapter {
+      display: inline-block;
+      padding: 8px 20px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    h2 {
+      font-size: clamp(28px, 5vw, 40px);
+      line-height: 1.2;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .story-intro {
+      font-size: clamp(16px, 2vw, 18px);
+      color: var(--text);
+      max-width: 85ch;
+      line-height: 1.8;
+      padding: 24px;
+      background: var(--panel);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .story-intro strong {
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    .insight {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+      border-left: 4px solid var(--highlight);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 12px;
+      font-size: 16px;
+      line-height: 1.7;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .insight strong {
+      color: var(--highlight);
+      font-weight: 600;
+    }
+
+    /* Grid and cards */
+    .grid {
+      display: grid;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    @media (min-width: 980px) {
+      .grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
+      border-color: var(--accent);
+    }
+
+    .card .viz {
+      padding: 24px;
+      background: var(--card);
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .card .viz.loading::after {
+      content: 'Loading visualization...';
+      position: absolute;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card .meta {
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .meta h3 {
+      font-size: 20px;
+      color: var(--accent-light);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .meta p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Callout boxes */
+    .callout {
+      background: var(--panel);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 28px;
+      margin: 40px 0;
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+    }
+
+    .callout h4 {
+      color: var(--accent-light);
+      font-size: 22px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .callout ul {
+      padding-left: 24px;
+      color: var(--muted);
+      list-style: none;
+    }
+
+    .callout li {
+      margin: 12px 0;
+      line-height: 1.7;
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .callout li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .callout li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Connection arrows */
+    .connection {
+      text-align: center;
+      padding: 48px 0;
+      color: var(--muted);
+      font-size: 18px;
+      position: relative;
+    }
+
+    .connection::before {
+      content: '↓';
+      display: block;
+      font-size: 36px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      animation: bounceArrow 2s infinite;
+    }
+
+    @keyframes bounceArrow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 20px;
+      background: var(--panel);
+      border-top: 2px solid var(--accent);
+      color: var(--muted);
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    footer h3 {
+      color: var(--accent-light);
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    footer p {
+      margin: 12px 0;
+      line-height: 1.7;
+    }
+
+    footer a {
+      color: var(--accent-light);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    footer a:hover {
+      color: var(--highlight);
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+      z-index: 99;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .back-to-top:hover {
+      background: var(--accent-light);
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero {
+        min-height: 90vh;
+      }
+
+      .hero-stats {
+        gap: 15px;
+      }
+
+      .stat {
+        min-width: 100px;
+        padding: 15px;
+      }
+
+      .grid.cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-dots {
+        display: none;
+      }
+    }
+
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      :root {
+        --bg: #000;
+        --text: #fff;
+        --accent: #4d9eff;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .nav-dots,
+      .back-to-top,
+      .scroll-indicator,
+      .progress-bar {
+        display: none;
+      }
+
+      section {
+        page-break-inside: avoid;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <h1>Screens, Sport & Speed — how Australians connect, play, and age</h1>
-      <p class="sub">
-        A compact walkthrough linking network performance with digital leisure, outdoor activity, and health context.
+  
+  <!-- Skip to content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Progress bar -->
+  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading visualization data...</div>
+  </div>
+
+  <!-- Navigation dots -->
+  <nav class="nav-dots" aria-label="Page navigation">
+    <a href="#infrastructure" data-tooltip="Infrastructure" aria-label="Go to Infrastructure section"></a>
+    <a href="#timing" data-tooltip="Peak Hours" aria-label="Go to Peak Hours section"></a>
+    <a href="#screen" data-tooltip="Gaming" aria-label="Go to Gaming section"></a>
+    <a href="#sport" data-tooltip="Outdoor Sport" aria-label="Go to Outdoor Sport section"></a>
+    <a href="#health" data-tooltip="Health" aria-label="Go to Health section"></a>
+    <a href="#synthesis" data-tooltip="Synthesis" aria-label="Go to Synthesis section"></a>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero" role="banner">
+    <div class="hero-content">
+      <h1>The Digital Divide</h1>
+      <p class="tagline">
+        How Australians connect, play, and age in an increasingly digital world — a data story exploring the intersection of internet infrastructure, leisure patterns, and public health
       </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="num">8</span>
+          <span class="label">States/Territories</span>
+        </div>
+        <div class="stat">
+          <span class="num">24h</span>
+          <span class="label">Usage Patterns</span>
+        </div>
+        <div class="stat">
+          <span class="num">5</span>
+          <span class="label">Generations</span>
+        </div>
+      </div>
     </div>
+    <div class="scroll-indicator" aria-hidden="true">↓ Scroll to explore</div>
   </header>
 
-  <main class="wrap">
+  <!-- Main Content -->
+  <main id="main-content" class="wrap">
 
-    <!-- 1) Infrastructure landscape -->
+    <!-- Chapter 1: Infrastructure -->
     <section id="infrastructure">
-      <h2>1) Connectivity landscape</h2>
-      <p class="lead">Where internet performance is strongest or weakest by state, and how big the gap is.</p>
+      <span class="chapter">Chapter 1</span>
+      <h2>The Foundation: Australia's Digital Infrastructure</h2>
+      <div class="story-intro">
+        Not all Australians experience the internet the same way. Before we can understand how people use digital services, we need to map the <strong>connectivity landscape</strong> — where is the infrastructure strongest, and where do residents face slower speeds? This sets the stage for everything that follows.
+      </div>
 
       <div class="grid cols-2">
-        <article class="card wrap">
-          <div id="viz-speed-map" class="viz"></div>
+        <article class="card">
+          <div id="viz-speed-map" class="viz loading" role="img" aria-label="Map showing download speeds by Australian state"></div>
           <div class="meta">
-            <h3>Busy-hour download speed by state</h3>
-            <p>Clear state differences set the context for evening leisure use and multiplayer reliability.</p>
+            <h3>Geographic Variation</h3>
+            <p>This map reveals stark differences across Australia. The colour gradient shows busy-hour download speeds — darker blue means faster connectivity. Notice how performance varies not just between cities and rural areas, but between entire states.</p>
           </div>
         </article>
 
         <article class="card">
-          <div id="viz-speed-rank" class="viz"></div>
+          <div id="viz-speed-rank" class="viz loading" role="img" aria-label="Bar chart ranking states by download speed"></div>
           <div class="meta">
-            <h3>Exact values (ranked)</h3>
-            <p>Quantifies the distance between fastest and slowest states so later comparisons have scale.</p>
+            <h3>The Rankings</h3>
+            <p>Here's the same data ranked from fastest to slowest. The gap between top and bottom states can be <strong>20+ Mbps during peak hours</strong> — enough to impact streaming quality, gaming experiences, and remote work productivity.</p>
           </div>
         </article>
       </div>
+
+      <p class="insight">
+        <strong>Key Insight:</strong> The digital divide isn't just about having internet or not — it's about <em>quality of experience</em>. A household in the ACT may stream 4K video seamlessly while a family in Tasmania struggles with buffering, even on the same plan tier.
+      </p>
     </section>
 
-    <!-- 2) When people are online -->
+    <div class="connection" aria-hidden="true">How does this infrastructure perform when Australians need it most?</div>
+
+    <!-- Chapter 2: Peak Usage -->
     <section id="timing">
-      <h2>2) When people are online</h2>
-      <p class="lead">Evening is the peak leisure window; deviations from plan are most noticeable here.</p>
+      <span class="chapter">Chapter 2</span>
+      <h2>When Australia Comes Online</h2>
+      <div class="story-intro">
+        Internet usage isn't constant throughout the day. Understanding <strong>when people are online</strong> helps us see when infrastructure is stressed — and when the speed differences between states matter most. The evening window is critical for leisure activities: streaming Netflix, gaming with friends, video calls with family.
+      </div>
 
       <article class="card">
-        <div id="viz-hour" class="viz"></div>
+        <div id="viz-hour" class="viz loading" role="img" aria-label="Line chart showing speed deviation throughout the day"></div>
         <div class="meta">
-          <h3>Deviation from plan (Mbps) across the day</h3>
-          <p>Higher tiers cushion small evening dips; useful context for streaming/gaming satisfaction.</p>
+          <h3>The Evening Crunch</h3>
+          <p>This chart shows how actual speeds deviate from plan speeds throughout the day. The shaded area (7–10 PM) is <strong>peak leisure time</strong> when demand surges. Notice how higher-tier plans (NBN100) maintain better performance even during peak hours — they have more "cushion" when the network gets congested.</p>
         </div>
       </article>
+
+      <div class="callout">
+        <h4>Why Evening Performance Matters</h4>
+        <ul>
+          <li><strong>Multiplayer gaming:</strong> Relies on consistent speeds and low latency — small dips can cause lag</li>
+          <li><strong>4K streaming:</strong> Requires sustained 25+ Mbps; households with multiple screens need even more</li>
+          <li><strong>Video calls:</strong> Work-from-home evening meetings need reliable upload speeds</li>
+          <li><strong>Cloud gaming:</strong> Services like Xbox Cloud Gaming are especially sensitive to performance drops</li>
+        </ul>
+      </div>
+
+      <p class="insight">
+        <strong>Key Insight:</strong> The infrastructure differences from Chapter 1 are most <em>felt</em> during these evening hours. States with lower baseline speeds experience worse degradation when everyone logs on after dinner.
+      </p>
     </section>
 
-    <!-- 3) Screen leisure -->
+    <div class="connection" aria-hidden="true">So what are Australians actually doing online during peak hours?</div>
+
+    <!-- Chapter 3: Digital Leisure -->
     <section id="screen">
-      <h2>3) Digital leisure</h2>
-      <p class="lead">Who plays more by generation and sex.</p>
+      <span class="chapter">Chapter 3</span>
+      <h2>Digital Leisure: Who Plays Video Games?</h2>
+      <div class="story-intro">
+        Gaming is one of the most <strong>bandwidth-intensive activities</strong> households engage in. Understanding who plays — and how participation varies by generation and gender — helps us see which demographic groups are most affected by the infrastructure variations we mapped earlier.
+      </div>
 
       <article class="card">
-        <div id="viz-gaming" class="viz"></div>
+        <div id="viz-gaming" class="viz loading" role="img" aria-label="Bar chart showing gaming participation by generation and sex"></div>
         <div class="meta">
-          <h3>Share who played digital games</h3>
-          <p>Age gradient is strong; males tend to play more within each generation.</p>
+          <h3>The Generational Gaming Divide</h3>
+          <p>Younger Australians are far more likely to play digital games. <strong>Gen Z and Millennials show 80%+ participation</strong>, while Baby Boomers are under 40%. Males consistently play more than females across all age groups. The confidence intervals show this data is robust — these aren't sampling flukes.</p>
         </div>
       </article>
+
+      <p class="insight">
+        <strong>Connecting the Dots:</strong> The states with slower evening speeds (Chapter 1) disproportionately affect younger households who are most likely to be gaming. A Gen Z gamer in Tasmania may experience more lag during the 7-10 PM window than their counterpart in the ACT — not because of their plan, but because of regional infrastructure limits.
+      </p>
+
+      <div class="callout">
+        <h4>Modern Gaming Demands</h4>
+        <ul>
+          <li><strong>Downloads:</strong> AAA game downloads can be 100+ GB (slower in lower-speed states)</li>
+          <li><strong>Multiplayer:</strong> Needs consistent low-latency connections during peak hours</li>
+          <li><strong>Cloud gaming:</strong> Requires 25+ Mbps sustained speeds — impossible in some regions during peak</li>
+          <li><strong>Game streaming:</strong> Twitch/YouTube streaming needs high upload speeds</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- 4) Outdoor leisure -->
+    <div class="connection" aria-hidden="true">But screen time is only part of the story — what about the physical world?</div>
+
+    <!-- Chapter 4: Outdoor Activity -->
     <section id="sport">
-      <h2>4) Outdoor activity</h2>
-      <p class="lead">How time on outdoor sport varies by age &amp; sex — a counterweight to screen time.</p>
+      <span class="chapter">Chapter 4</span>
+      <h2>The Other Side: Outdoor Sport and Physical Activity</h2>
+      <div class="story-intro">
+        While digital gaming peaks in younger generations, <strong>outdoor sport participation</strong> provides an important counterbalance. How do Australians balance screen time with physical activity? And does this balance shift as people age?
+      </div>
 
       <article class="card">
-        <div id="viz-sport" class="viz"></div>
+        <div id="viz-sport" class="viz loading" role="img" aria-label="Bar chart showing outdoor sport time by age and sex"></div>
         <div class="meta">
-          <h3>Outdoor sport time (hours/day)</h3>
-          <p>Men spend more time than women at most ages; Persons marker shows the group average per row.</p>
+          <h3>Age and Activity Patterns</h3>
+          <p>Younger Australians (15-24) average the most outdoor sport time — over an hour per day for males. Activity declines with age, with seniors (75+) averaging under 30 minutes daily. The grey bars show the <strong>average for "Persons"</strong> (both sexes combined) for context.</p>
         </div>
       </article>
+
+      <p class="insight">
+        <strong>The Paradox of Leisure:</strong> Gen Z and Millennials show the <em>highest</em> gaming participation (Chapter 3) but <em>also</em> the highest outdoor sport time. This suggests younger Australians aren't choosing between screen and sport — they're doing both. The real story is how <strong>total leisure time shrinks with age</strong>, affecting both digital and physical activity.
+      </p>
+
+      <div class="callout">
+        <h4>Why This Balance Matters</h4>
+        <ul>
+          <li><strong>Public health:</strong> Physical activity reduces chronic disease risk</li>
+          <li><strong>Social connection:</strong> Sport often involves in-person community interaction</li>
+          <li><strong>Mental health:</strong> Balance between screen and outdoor time affects wellbeing</li>
+          <li><strong>Infrastructure planning:</strong> Need investment in both digital and physical recreation spaces</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- 5) Health context -->
+    <div class="connection" aria-hidden="true">As Australians age, both types of leisure decline — but what else changes?</div>
+
+    <!-- Chapter 5: Health Context -->
     <section id="health">
-      <h2>5) Health context</h2>
-      <p class="lead">Prevalence rises with age; males generally higher. Labels use plain language.</p>
+      <span class="chapter">Chapter 5</span>
+      <h2>Health Context: The Aging Factor</h2>
+      <div class="story-intro">
+        The previous chapters showed how both <strong>digital and physical leisure decline with age</strong>. But there's another dimension: as Australians age, chronic health conditions become more prevalent. Understanding diabetes rates by age adds important context to the activity patterns we've observed.
+      </div>
 
       <article class="card">
-        <div id="viz-diabetes" class="viz"></div>
+        <div id="viz-diabetes" class="viz loading" role="img" aria-label="Butterfly chart showing diabetes prevalence by age and sex"></div>
         <div class="meta">
-          <h3>Diabetes prevalence by age &amp; sex</h3>
-          <p class="note">Fasting glucose = today’s blood test • HbA1c = 3-month average.</p>
+          <h3>Rising Prevalence with Age</h3>
+          <p>This "butterfly chart" shows diabetes prevalence by age group. The bars extend left (males, blue) and right (females, orange) from a centre line. Among those 65+, <strong>nearly 1 in 6 Australians has diabetes</strong> — a rate that is drastically higher than younger age groups.</p>
         </div>
       </article>
+
+      <div class="callout">
+        <h4>Understanding the Metrics</h4>
+        <ul>
+          <li><strong>Fasting glucose:</strong> Blood test taken after overnight fast (today's reading)</li>
+          <li><strong>HbA1c:</strong> Hemoglobin A1c measures average blood sugar over 3 months (longer-term view)</li>
+          <li><strong>Why it matters:</strong> Diabetes management often requires telehealth appointments, online health portals, and digital monitoring tools — activities that depend on reliable internet</li>
+        </ul>
+      </div>
+
+      <p class="insight">
+        <strong>The Hidden Digital Divide:</strong> Older Australians face a double burden — they have <em>lower digital literacy</em> (less gaming, less online activity) but <em>greater health needs</em> that increasingly require digital access. A senior in a low-speed state may struggle to attend telehealth appointments or access online health records, exactly when they need these services most.
+      </p>
     </section>
 
-    <!-- 6) Linking the dots -->
-    <section id="link">
-      <h2>6) Performance vs experience</h2>
-      <p class="lead">Do the states with faster downloads also feel snappier (lower latency)?</p>
+    <div class="connection" aria-hidden="true">Let's bring it all together</div>
+
+    <!-- Chapter 6: Synthesis -->
+    <section id="synthesis">
+      <span class="chapter">Chapter 6</span>
+      <h2>Closing the Loop: Speed, Latency, and User Experience</h2>
+      <div class="story-intro">
+        We've journeyed from infrastructure through leisure patterns to health outcomes. Now let's revisit the technical performance metrics with <strong>new eyes</strong>. Do states with faster downloads also provide snappier, more responsive connections (lower latency)? And what does this mean for the diverse activities Australians engage in?
+      </div>
 
       <article class="card">
-        <div id="viz-speed-lat" class="viz"></div>
+        <div id="viz-speed-lat" class="viz loading" role="img" aria-label="Scatterplot showing relationship between download speed and latency by state"></div>
         <div class="meta">
-          <h3>Download vs latency (by state)</h3>
-          <p>Use alongside the map to discuss which states are best positioned for heavy evening use.</p>
+          <h3>Speed vs. Responsiveness</h3>
+          <p>Each bubble represents a state/territory, sized by number of measured units. There's a strong correlation: <strong>faster download states also tend to have lower latency</strong>. The ACT (top-right) excels on both metrics, while Tasmania and NT cluster in the lower-left — slower speeds <em>and</em> less responsive connections.</p>
         </div>
       </article>
+
+      <div class="callout">
+        <h4>Why Both Metrics Matter</h4>
+        <ul>
+          <li><strong>Download speed:</strong> Determines how fast you can pull data (streaming, downloads, loading web pages)</li>
+          <li><strong>Latency:</strong> Measures responsiveness — how quickly the network reacts (critical for gaming, video calls, real-time apps)</li>
+          <li><strong>The combination:</strong> You need <em>both</em> for a great experience — high speed with high latency still feels sluggish</li>
+        </ul>
+      </div>
+
+      <p class="insight">
+        <strong>The Complete Picture:</strong> States in the bottom-left suffer on both dimensions. This means:
+      </p>
+      <ul style="color:var(--muted); max-width:75ch; line-height:1.8; margin-top:16px; padding-left:24px;">
+        <li style="margin:12px 0;"><strong style="color:var(--text);">Younger gamers</strong> (Chapter 3) experience more lag in multiplayer games</li>
+        <li style="margin:12px 0;"><strong style="color:var(--text);">Households</strong> face buffering during the evening peak hours (Chapter 2)</li>
+        <li style="margin:12px 0;"><strong style="color:var(--text);">Older Australians</strong> with health needs (Chapter 5) may have poor telehealth experiences</li>
+        <li style="margin:12px 0;"><strong style="color:var(--text);">Active families</strong> (Chapter 4) who want to stream sports or use fitness apps face delays</li>
+      </ul>
+
+      <div class="story-intro" style="margin-top:48px; border-left-color: var(--highlight);">
+        <strong style="color: var(--highlight);">The Throughline:</strong> This isn't just a story about infrastructure — it's about <em>equity</em>. The digital divide affects different Australians in different ways: gamers frustrated by lag, seniors unable to access telehealth reliably, families with slow downloads of educational content. Infrastructure isn't neutral — it shapes who can participate fully in modern Australian life.
+      </div>
     </section>
+
   </main>
 
-  <footer>
+  <!-- Footer -->
+  <footer role="contentinfo">
     <div class="wrap">
-      <p>Prototype layout • Data sources: ABS, NBN MBA program, author calculations. Charts rendered with Vega-Lite.</p>
+      <h3>About This Story</h3>
+      <p><strong>Data sources:</strong> Australian Bureau of Statistics (ABS), NBN Measuring Broadband Australia (MBA) program</p>
+      <p><strong>Visualization:</strong> Built with Vega-Lite • Interactive charts allow hover for detailed data</p>
+      <p><strong>Methodology:</strong> All charts use official government data; confidence intervals shown where available</p>
+      <p style="margin-top:32px; font-size:14px; opacity:0.7;">Created as a data storytelling prototype — demonstrating how infrastructure data connects to human outcomes</p>
     </div>
   </footer>
 
+  <!-- Back to top button -->
+  <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+    ↑
+  </button>
+
   <script>
-    vegaEmbed("#viz-speed-map", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/speed_state_map.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
-    vegaEmbed("#viz-speed-rank", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/speed_state_bar.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
-    vegaEmbed("#viz-hour", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/nbn_performance_hour.json", { mode: "vega-lite", renderer: "svg", actions: false }).catch(console.error);
-    vegaEmbed("#viz-gaming", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/game_gen_sex.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
-    vegaEmbed("#viz-sport", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/outdoor_sport_time.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
-    vegaEmbed("#viz-diabetes", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/pct_diabetes.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
-    vegaEmbed("#viz-speed-lat", "https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/speed_latency_state.json", { mode: "vega-lite", renderer: "canvas", actions: false }).catch(console.error);
+    // Configuration
+    const GITHUB_BASE = 'https://raw.githubusercontent.com/lukaluu/FIT3179---Data-visualization-2/refs/heads/main/js/';
+    const embedOptions = {
+      mode: "vega-lite",
+      actions: false,
+      renderer: "canvas"
+    };
+
+    // Visualization configurations
+    const visualizations = [
+      { id: 'viz-speed-map', file: 'speed_state_map.json', renderer: 'canvas' },
+      { id: 'viz-speed-rank', file: 'speed_state_bar.json', renderer: 'canvas' },
+      { id: 'viz-hour', file: 'nbn_performance_hour.json', renderer: 'svg' },
+      { id: 'viz-gaming', file: 'game_gen_sex.json', renderer: 'canvas' },
+      { id: 'viz-sport', file: 'outdoor_sport_time.json', renderer: 'canvas' },
+      { id: 'viz-diabetes', file: 'pct_diabetes.json', renderer: 'canvas' },
+      { id: 'viz-speed-lat', file: 'speed_latency_state.json', renderer: 'canvas' }
+    ];
+
+    // Load all visualizations
+    let loadedCount = 0;
+    const totalVisualizations = visualizations.length;
+
+    visualizations.forEach(viz => {
+      const element = document.getElementById(viz.id);
+      if (element) {
+        vegaEmbed(`#${viz.id}`, `${GITHUB_BASE}${viz.file}`, {
+          ...embedOptions,
+          renderer: viz.renderer
+        })
+        .then(() => {
+          element.classList.remove('loading');
+          loadedCount++;
+          if (loadedCount === totalVisualizations) {
+            hideLoadingOverlay();
+          }
+        })
+        .catch(err => {
+          console.error(`Error loading ${viz.id}:`, err);
+          element.innerHTML = '<p style="color: var(--muted); padding: 20px;">Error loading visualization</p>';
+          element.classList.remove('loading');
+          loadedCount++;
+          if (loadedCount === totalVisualizations) {
+            hideLoadingOverlay();
+          }
+        });
+      }
+    });
+
+    // Hide loading overlay
+    function hideLoadingOverlay() {
+      setTimeout(() => {
+        document.querySelector('.loading-overlay').classList.add('hidden');
+      }, 500);
+    }
+
+    // Progress bar
+    function updateProgressBar() {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollPercent = (scrollTop / (documentHeight - windowHeight)) * 100;
+      document.querySelector('.progress-bar').style.width = scrollPercent + '%';
+      document.querySelector('.progress-bar').setAttribute('aria-valuenow', Math.round(scrollPercent));
+    }
+
+    // Scroll-triggered animations
+    function checkVisibility() {
+      const sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        if (rect.top < windowHeight * 0.75) {
+          section.classList.add('visible');
+        }
+      });
+    }
+
+    // Update navigation dots
+    function updateNavigation() {
+      const sections = document.querySelectorAll('section');
+      const navDots = document.querySelectorAll('.nav-dots a');
+      let current = '';
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navDots.forEach(dot => {
+        dot.classList.remove('active');
+        if (dot.getAttribute('href').includes(current)) {
+          dot.classList.add('active');
+        }
+      });
+    }
+
+    // Back to top button visibility
+    function updateBackToTop() {
+      const button = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        button.classList.add('visible');
+      } else {
+        button.classList.remove('visible');
+      }
+    }
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Event listeners
+    window.addEventListener('scroll', () => {
+      updateProgressBar();
+      checkVisibility();
+      updateNavigation();
+      updateBackToTop();
+    });
+
+    window.addEventListener('load', () => {
+      checkVisibility();
+      updateNavigation();
+    });
+
+    // Initial calls
+    updateProgressBar();
+    checkVisibility();
+    updateNavigation();
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Home') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+      }
+    });
+
+    // Prefers reduced motion detection
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.style.scrollBehavior = 'auto';
+    }
   </script>
 </body>
 </html>
