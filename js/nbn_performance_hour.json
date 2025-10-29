@@ -11,14 +11,11 @@
     { "calculate": "toNumber(substring(datum.Time,0,2))", "as": "Hour" },
     { "fold": ["Download_NBN100","Download_NBN50","Download_NBN25"], "as": ["Metric","Value"] },
     { "calculate": "replace(datum.Metric,'Download_NBN','NBN')", "as": "Tier" },
-
     {
       "calculate": "datum.Tier==='NBN100' ? 100 : datum.Tier==='NBN50' ? 50 : 25",
       "as": "Plan"
     },
-
     { "calculate": "datum.Value - datum.Plan", "as": "DevMbps" },
-
     { "calculate": "pad(format(datum.Hour, '02'),2,'0','left') + ':00'", "as": "HourLabel" },
     { "calculate": "format(datum.Value, '.1f') + ' Mbps'", "as": "val_label" },
     { "calculate": "format(datum.Plan, '.0f') + ' Mbps'", "as": "plan_label" },
@@ -33,9 +30,10 @@
         "color": {"value": "#000"}
       }
     },
-
-    { "mark": {"type": "rule", "color": "#9ca3af"}, "encoding": { "y": { "datum": 0 } } },
-
+    { 
+      "mark": {"type": "rule", "color": "#9ca3af"}, 
+      "encoding": { "y": { "datum": 0 } } 
+    },
     {
       "mark": {"type": "line", "interpolate": "monotone", "strokeWidth": 2},
       "encoding": {
@@ -51,7 +49,21 @@
           "title": "Deviation from plan (Mbps)",
           "scale": {"zero": true}
         },
-        "color": { "field": "Tier", "type": "nominal", "title": "Plan tier" },
+        "color": { 
+          "field": "Tier", 
+          "type": "nominal", 
+          "title": "Plan tier",
+          "legend": {
+            "orient": "top-right",
+            "offset": 10,
+            "title": "Plan Tier",
+            "titleFontSize": 12,
+            "titleFontWeight": "bold",
+            "labelFontSize": 11,
+            "symbolSize": 100,
+            "symbolStrokeWidth": 2
+          }
+        },
         "tooltip": [
           { "field": "HourLabel", "title": "Time" },
           { "field": "Tier", "title": "Tier" },
@@ -61,7 +73,6 @@
         ]
       }
     },
-
     {
       "mark": {"type": "point", "filled": true, "size": 36, "opacity": 0.85},
       "encoding": {
@@ -77,7 +88,6 @@
         ]
       }
     },
-
     {
       "transform": [
         { "aggregate": [{ "op": "max", "field": "DevMbps", "as": "ymax" }] }
